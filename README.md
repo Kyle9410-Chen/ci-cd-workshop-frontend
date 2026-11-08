@@ -35,6 +35,21 @@ docker compose up --build -d
 
 容器內的 Nginx 只負責提供靜態檔案。API 位址在 **build time** 由 `VITE_API_BASE_URL` 寫入 bundle，修改後必須重新 build image。
 
+## CI/CD
+
+`.github/workflows/main.yml` 在每次 push（任何 branch）時執行 Lint 與 Test；只有 `main` 在兩者都通過後，才會 build image 並推到 Docker Hub，tag 為 `latest` 與 commit SHA。
+
+需要在 GitHub repo 的 **Settings → Secrets and variables → Actions** 設定：
+
+| 類型     | 名稱                 | 內容                                                     |
+| -------- | -------------------- | -------------------------------------------------------- |
+| Variable | `DOCKERHUB_USERNAME` | Docker Hub 帳號名稱                                      |
+| Secret   | `DOCKERHUB_TOKEN`    | Docker Hub 的 Personal Access Token（權限 Read & Write） |
+
+Image：`<DOCKERHUB_USERNAME>/ci-cd-workshop-frontend`
+
+CD 產生的 image 以 `VITE_API_BASE_URL=/api` build，前端會呼叫同網域的 `/api`，部署時需要由 reverse proxy 將 `/api` 轉給 backend。
+
 ## 環境變數
 
 | 名稱                | 預設值                      | 說明                       |
