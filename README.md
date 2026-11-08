@@ -37,7 +37,7 @@ docker compose up --build -d
 
 ## CI/CD
 
-`.github/workflows/main.yml` 在每次 push（任何 branch）時執行 Lint 與 Test；只有 `main` 在兩者都通過後，才會 build image 並推到 Docker Hub，tag 為 `latest` 與 commit SHA。
+`.github/workflows/main.yml` 在每次 push（任何 branch）時執行 Lint 與 Test，兩者都通過後會 build image 並推到 Docker Hub，tag 為 `latest` 與 commit SHA。
 
 需要在 GitHub repo 的 **Settings → Secrets and variables → Actions** 設定：
 
